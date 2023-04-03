@@ -1,22 +1,24 @@
 import numpy as np
 import cv2
 from cv2 import imread
+import matplotlib.pyplot as plt
 
 # read the image
 img = imread('image_capture/captured_img.png')
 
 # split the image into color channels
-(b, g, r) = cv2.split(img)
+b, g, r = cv2.split(img)
 
-# merge the image back together
-merged = cv2.merge([b, g, r])
+# visualize each color channel
+zeros = np.zeros(img.shape[:2], dtype='uint8')
 
-# concatenate the images along the x-axis
-# (i.e., from left to right)
-concatenated = np.concatenate([b, g, r], axis=1)
-
-# show the image
-cv2.imshow('Blue', concatenated)
-cv2.imshow('Merged', merged)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# show the split image using matplotlib
+plt.subplot(221), plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)), plt.title('Original')
+plt.xticks([]), plt.yticks([])
+plt.subplot(222), plt.imshow(cv2.merge([zeros, zeros, r])), plt.title('Blue')
+plt.xticks([]), plt.yticks([])
+plt.subplot(223), plt.imshow(cv2.merge([zeros, g, zeros])), plt.title('Green')
+plt.xticks([]), plt.yticks([])
+plt.subplot(224), plt.imshow(cv2.merge([b, zeros, zeros])), plt.title('Red')
+plt.xticks([]), plt.yticks([])
+plt.show()
